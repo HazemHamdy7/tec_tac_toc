@@ -1,0 +1,64 @@
+import 'package:flutter/material.dart';
+
+class MyCustomWidget extends StatefulWidget {
+  const MyCustomWidget({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _MyCustomWidgetState createState() => _MyCustomWidgetState();
+}
+
+class _MyCustomWidgetState extends State<MyCustomWidget>
+    with TickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation _animation;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    );
+    _animationController.repeat(reverse: true);
+    _animation = Tween(begin: 1.0, end: 13.0).animate(_animationController)
+      ..addListener(
+        () {
+          setState(() {});
+        },
+      );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _animation.isDismissed;
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                blurRadius: _animation.value + _animation.value,
+                spreadRadius: _animation.value,
+                offset: Offset(_animation.value, _animation.value),
+              ),
+            ],
+          ),
+          child: Icon(Icons.favorite,
+              color: Colors.pink.withOpacity(0.7), size: 40),
+        ),
+      ),
+    );
+  }
+}

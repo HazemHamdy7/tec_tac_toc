@@ -9,17 +9,20 @@ class CustomButton extends StatelessWidget {
   }) : super(key: key);
   final VoidCallback onTap;
   final String text;
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Container(
-      decoration: const BoxDecoration(boxShadow: [
-        BoxShadow(
-          color: Colors.blue,
-          blurRadius: 5,
-          spreadRadius: 0,
-        ),
-      ]),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.15),
+            blurRadius: 5,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
