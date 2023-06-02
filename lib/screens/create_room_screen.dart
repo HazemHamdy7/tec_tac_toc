@@ -3,6 +3,7 @@ import 'package:tec_tac/responsive/resopnsive.dart';
 import 'package:tec_tac/widgets/custom_button.dart';
 import 'package:tec_tac/widgets/custom_text_filed.dart';
 
+import '../resources/socket_method.dart';
 import '../widgets/custom_text.dart';
 
 class CreateRoomScreen extends StatefulWidget {
@@ -16,6 +17,13 @@ class CreateRoomScreen extends StatefulWidget {
 
 class _CreateRoomScreenState extends State<CreateRoomScreen> {
   final TextEditingController _nameController = TextEditingController();
+  final SocketMethods _socketMethods = SocketMethods();
+  @override
+  void initState() {
+    super.initState();
+    _socketMethods.createRoomSuccessListener(context);
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -43,7 +51,11 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
               CustomTextField(
                   controller: _nameController, hintText: 'Enter your nickname'),
               SizedBox(height: size.height * 0.045),
-              CustomButton(onTap: () {}, text: 'Create')
+              CustomButton(
+                  onTap: () => _socketMethods.createRoom(
+                        _nameController.text,
+                      ),
+                  text: 'Create')
             ],
           ),
         ),
