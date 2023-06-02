@@ -25,13 +25,12 @@ class CustomTextField extends StatelessWidget {
         ],
       ),
       child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          fillColor: bgColor,
-          filled: true,
-          hintText: hintText,
-        ),
-      ),
+          controller: controller,
+          decoration: InputDecoration(
+            fillColor: bgColor,
+            filled: true,
+            hintText: hintText,
+          )),
     );
   }
 }
