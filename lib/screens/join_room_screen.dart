@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class JoinRoomScreen extends StatefulWidget {
+  static String routeName = '/join-room';
+
   const JoinRoomScreen({super.key});
 
   @override
