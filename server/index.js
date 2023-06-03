@@ -17,7 +17,7 @@ app.use(express.json());
 const DB ="mongodb+srv://<hazem>:<01152672868>@cluster0.zc0wqrw.mongodb.net/";
 
 io.on("connectoin", (socket)=>{
-    console.log("===== connection ====");
+    console.log("===== connection =====");
     //    console.log(socket.id);
     socket.on('cearteRoom', async ({nickName})=>{
          console.log(nickName);
@@ -39,10 +39,43 @@ io.on("connectoin", (socket)=>{
          catch(e){
             console.log(e);
          }
-
-
     });
+
+      socket.on("joinRoom", async ({ nickName, roomIds }) => {
+        try {
+          if (!roomId.match(/^[0-9a-fA-F]{24}$/)) {
+            socket.emit("errorOccurred", "Please enter a valid room ID.");
+            return;
+          }
+          let room = await Room.findById(roomId);
+
+          if (room.isJoin) {
+            let player = {
+              nickName,
+              socketID: socket.id,
+              playerType: "O",
+            };
+            socket.join(roomId);
+            room.players.push(player);
+            room.isJoin = false;
+            room = await room.save();
+            io.to(roomId).emit("joinRoomSuccess", room);
+            io.to(roomId).emit("updatePlayers", room.players);
+            io.to(roomId).emit("updateRoom", room);
+          } else {
+            socket.emit(
+              "errorOccurred",
+              "The game is in progress, try again later."
+            );
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      });
+
 })
+
+//======================//
 mongoose.connect(DB).then(()=>{
     console.log(" Connected successfully ");
     
